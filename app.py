@@ -1,3 +1,4 @@
+import textwrap
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -21,44 +22,26 @@ st.set_page_config(
 # ============================================================
 
 st.markdown(
-    """
-    <style>
+    textwrap.dedent("""
+    <div class="project-header">
 
-    /* ==============================
-       GENERAL
-       ============================== */
+        <div class="project-label">
+            MACHINE LEARNING • RESEARCH PROJECT
+        </div>
 
-    @import url(
-        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'
-    );
+        <div class="project-title">
+            Sleep Disorder Classification
+        </div>
 
-    * {
-        font-family: 'Inter', sans-serif;
-    }
+        <div class="project-description">
+            Machine-learning based classification of sleep disorders
+            using lifestyle and physiological information.
+        </div>
 
-    .stApp {
-        background:
-            linear-gradient(
-                135deg,
-                #070b14 0%,
-                #0b1120 55%,
-                #0d1426 100%
-            );
-
-        color: #f4f6ff;
-    }
-
-    [data-testid="stHeader"] {
-        background: transparent;
-    }
-
-    .block-container {
-        max-width: 1450px;
-        padding-top: 1.5rem;
-        padding-bottom: 2rem;
-    }
-
-
+    </div>
+    """),
+    unsafe_allow_html=True
+)
     /* ==============================
        SIDEBAR
        ============================== */
