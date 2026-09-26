@@ -9,521 +9,547 @@ import joblib
 # ============================================================
 
 st.set_page_config(
-    page_title="SleepAI | Sleep Disorder Classification",
-    page_icon="🌙",
+    page_title="Sleep Disorder Classification",
+    page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 
 # ============================================================
-# CUSTOM NIGHT THEME
+# PROFESSIONAL DARK THEME
 # ============================================================
 
-st.markdown("""
-<style>
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+st.markdown(
+    """
+    <style>
 
-* {
-    font-family: 'Inter', sans-serif;
-}
+    /* ==============================
+       GENERAL
+       ============================== */
 
-.stApp {
-    background:
-        radial-gradient(
-            circle at 8% 5%,
-            rgba(100, 85, 210, 0.20),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 92% 10%,
-            rgba(55, 115, 220, 0.15),
-            transparent 25%
-        ),
-        linear-gradient(
-            135deg,
-            #040711 0%,
-            #08101f 50%,
-            #0b1428 100%
-        );
+    @import url(
+        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'
+    );
 
-    color: #f4f6ff;
-}
+    * {
+        font-family: 'Inter', sans-serif;
+    }
 
+    .stApp {
+        background:
+            linear-gradient(
+                135deg,
+                #070b14 0%,
+                #0b1120 55%,
+                #0d1426 100%
+            );
 
-[data-testid="stHeader"] {
-    background: transparent;
-}
+        color: #f4f6ff;
+    }
 
+    [data-testid="stHeader"] {
+        background: transparent;
+    }
 
-.block-container {
-    max-width: 1450px;
-    padding-top: 1.5rem;
-    padding-bottom: 2rem;
-}
+    .block-container {
+        max-width: 1450px;
+        padding-top: 1.5rem;
+        padding-bottom: 2rem;
+    }
 
 
-/* ============================================================
-   SIDEBAR
-   ============================================================ */
+    /* ==============================
+       SIDEBAR
+       ============================== */
 
-[data-testid="stSidebar"] {
-    background:
-        linear-gradient(
-            180deg,
-            #060a15 0%,
-            #0a1020 100%
-        );
+    [data-testid="stSidebar"] {
 
-    border-right: 1px solid rgba(150, 165, 205, 0.14);
-}
+        background:
+            linear-gradient(
+                180deg,
+                #060a13,
+                #0a1020
+            );
 
+        border-right:
+            1px solid rgba(150,160,190,0.13);
+    }
 
-[data-testid="stSidebar"] * {
-    color: #dce4fa !important;
-}
+    [data-testid="stSidebar"] * {
+        color: #dce4fa !important;
+    }
 
 
-/* ============================================================
-   HERO
-   ============================================================ */
+    /* ==============================
+       HEADER
+       ============================== */
 
-.hero {
-    position: relative;
-    overflow: hidden;
+    .project-header {
 
-    border-radius: 30px;
+        padding:
+            8px 4px 25px 4px;
 
-    padding: 45px;
+        border-bottom:
+            1px solid rgba(150,160,190,0.15);
 
-    margin-bottom: 30px;
+        margin-bottom:
+            28px;
+    }
 
-    border: 1px solid rgba(159, 139, 255, 0.25);
+    .project-label {
 
-    background:
-        radial-gradient(
-            circle at 90% 15%,
-            rgba(145, 125, 255, 0.18),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 65% 100%,
-            rgba(85, 150, 255, 0.10),
-            transparent 28%
-        ),
-        rgba(12, 18, 35, 0.90);
+        color: #9d8cff;
 
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.35);
-}
+        font-size: 11px;
 
+        font-weight: 700;
 
-/* ============================================================
-   MOON
-   ============================================================ */
+        letter-spacing: 1.8px;
 
-.moon {
-    position: absolute;
+        text-transform: uppercase;
 
-    right: 70px;
-    top: 42px;
+        margin-bottom: 8px;
+    }
 
-    width: 110px;
-    height: 110px;
+    .project-title {
 
-    border-radius: 50%;
+        color: #f5f7ff;
 
-    background: #f5f2ff;
+        font-size: 34px;
 
-    box-shadow:
-        0 0 25px rgba(210, 200, 255, 0.35),
-        0 0 70px rgba(155, 135, 255, 0.20);
-}
+        font-weight: 750;
 
+        letter-spacing: -0.8px;
 
-.moon:after {
-    content: "";
+        margin-bottom: 7px;
+    }
 
-    position: absolute;
+    .project-description {
 
-    left: 32px;
-    top: -8px;
+        color: #8f9ab5;
 
-    width: 110px;
-    height: 110px;
+        font-size: 14px;
 
-    border-radius: 50%;
+        line-height: 1.6;
 
-    background: #0d1426;
-}
+        max-width: 850px;
+    }
 
 
-/* ============================================================
-   STARS
-   ============================================================ */
+    /* ==============================
+       SECTION TITLES
+       ============================== */
 
-.stars {
-    position: absolute;
+    .section-title {
 
-    right: 205px;
-    top: 25px;
+        color: #f4f6ff;
 
-    color: rgba(230, 232, 255, 0.75);
+        font-size: 21px;
 
-    font-size: 14px;
+        font-weight: 750;
 
-    letter-spacing: 12px;
-}
+        margin-top: 28px;
 
+        margin-bottom: 5px;
+    }
 
-/* ============================================================
-   HERO TEXT
-   ============================================================ */
+    .section-description {
 
-.kicker {
-    color: #aaa0ff;
+        color: #808ca6;
 
-    font-size: 12px;
+        font-size: 12px;
 
-    font-weight: 800;
+        margin-bottom: 17px;
+    }
 
-    letter-spacing: 2px;
 
-    text-transform: uppercase;
-}
+    /* ==============================
+       OVERVIEW CARDS
+       ============================== */
 
+    .overview-card {
 
-.hero h1 {
-    margin-top: 12px;
-    margin-bottom: 12px;
+        background:
+            rgba(17,25,47,0.72);
 
-    font-size: clamp(38px, 5vw, 60px);
+        border:
+            1px solid rgba(150,160,190,0.14);
 
-    line-height: 1.02;
+        border-radius: 14px;
 
-    letter-spacing: -2.5px;
+        padding: 18px;
 
-    font-weight: 800;
+        min-height: 112px;
 
-    color: #f8f8ff;
-}
+        transition: 0.2s;
+    }
 
+    .overview-card:hover {
 
-.hero p {
-    max-width: 800px;
+        border-color:
+            rgba(150,140,255,0.35);
 
-    color: #aeb8d0;
+        transform:
+            translateY(-2px);
+    }
 
-    font-size: 15px;
+    .overview-label {
 
-    line-height: 1.7;
-}
+        color: #727f9a;
 
+        font-size: 10px;
 
-/* ============================================================
-   BADGES
-   ============================================================ */
+        font-weight: 700;
 
-.badge {
-    display: inline-block;
+        letter-spacing: 1.2px;
 
-    margin-top: 15px;
-    margin-right: 7px;
+        margin-bottom: 8px;
+    }
 
-    padding: 7px 13px;
+    .overview-value {
 
-    border-radius: 999px;
+        color: #f4f6ff;
 
-    border: 1px solid rgba(160, 140, 255, 0.22);
+        font-size: 18px;
 
-    background: rgba(155, 135, 255, 0.07);
+        font-weight: 700;
+    }
 
-    color: #cbc4ff;
+    .overview-description {
 
-    font-size: 11px;
+        color: #727f9a;
 
-    font-weight: 700;
-}
+        font-size: 11px;
 
+        margin-top: 5px;
+    }
 
-/* ============================================================
-   SECTION TITLES
-   ============================================================ */
 
-.section-title {
-    color: #f4f6ff;
+    /* ==============================
+       CONFIGURATION CARD
+       ============================== */
 
-    font-size: 24px;
+    .configuration-card {
 
-    font-weight: 800;
+        background:
+            linear-gradient(
+                145deg,
+                rgba(24,32,56,0.82),
+                rgba(14,21,39,0.82)
+            );
 
-    margin-top: 25px;
-    margin-bottom: 5px;
-}
+        border:
+            1px solid rgba(150,160,190,0.15);
 
+        border-radius: 16px;
 
-.section-subtitle {
-    color: #8f9ab5;
+        padding: 20px;
 
-    font-size: 13px;
+        margin-top: 8px;
+    }
 
-    margin-bottom: 18px;
-}
+    .configuration-title {
 
+        color: #737f9a;
 
-/* ============================================================
-   CONFIGURATION CARD
-   ============================================================ */
+        font-size: 10px;
 
-.config-card {
-    padding: 22px;
+        font-weight: 700;
 
-    border-radius: 22px;
+        letter-spacing: 1.2px;
 
-    border: 1px solid rgba(155, 135, 255, 0.18);
+        text-transform: uppercase;
+    }
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(27, 35, 65, 0.75),
-            rgba(13, 19, 36, 0.85)
-        );
+    .configuration-model {
 
-    box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.18);
-}
+        color: #f5f6ff;
 
+        font-size: 22px;
 
-/* ============================================================
-   RESULT CARDS
-   ============================================================ */
+        font-weight: 750;
 
-.result-card {
-    padding: 28px 20px;
+        margin-top: 7px;
+    }
 
-    min-height: 180px;
+    .configuration-text {
 
-    border-radius: 24px;
+        color: #808ca6;
 
-    text-align: center;
+        font-size: 12px;
 
-    border: 1px solid rgba(155, 135, 255, 0.22);
+        margin-top: 5px;
+    }
 
-    background:
-        radial-gradient(
-            circle at 80% 10%,
-            rgba(155, 135, 255, 0.14),
-            transparent 30%
-        ),
-        linear-gradient(
-            145deg,
-            rgba(25, 33, 61, 0.95),
-            rgba(11, 17, 32, 0.96)
-        );
 
-    box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.25);
-}
+    /* ==============================
+       INPUT CONTAINER
+       ============================== */
 
+    .input-card {
 
-.result-icon {
-    font-size: 40px;
-}
+        background:
+            rgba(14,21,39,0.60);
 
+        border:
+            1px solid rgba(150,160,190,0.13);
 
-.result-label {
-    color: #8793af;
+        border-radius: 16px;
 
-    font-size: 10px;
+        padding: 5px 18px 18px 18px;
+    }
 
-    font-weight: 800;
 
-    letter-spacing: 1.3px;
+    /* ==============================
+       INPUTS
+       ============================== */
 
-    text-transform: uppercase;
+    [data-testid="stNumberInput"] input,
+    [data-baseweb="select"] > div {
 
-    margin-top: 8px;
-}
+        background:
+            #111a2e !important;
 
+        border:
+            1px solid rgba(150,160,190,0.17) !important;
 
-.result-value {
-    color: #f8f8ff;
+        color:
+            #f2f5ff !important;
 
-    font-size: 27px;
+        border-radius:
+            10px !important;
+    }
 
-    font-weight: 800;
+    label {
 
-    margin-top: 7px;
-}
+        color:
+            #cbd5e1 !important;
 
+        font-weight:
+            600 !important;
+    }
 
-/* ============================================================
-   RECOMMENDATION
-   ============================================================ */
 
-.recommendation {
-    border-left: 3px solid #9b87ff;
+    /* ==============================
+       PREDICTION BUTTON
+       ============================== */
 
-    border-radius: 0 18px 18px 0;
+    div.stButton > button {
 
-    padding: 21px 23px;
+        width: 100%;
 
-    background:
-        rgba(155, 135, 255, 0.07);
+        min-height: 55px;
 
-    color: #d5dced;
+        border-radius: 12px;
 
-    line-height: 1.7;
-}
+        border:
+            1px solid rgba(160,145,255,0.45);
 
+        background:
+            linear-gradient(
+                135deg,
+                #6654cf,
+                #485bb8
+            );
 
-/* ============================================================
-   SUMMARY CARDS
-   ============================================================ */
+        color: white;
 
-.summary-card {
-    border: 1px solid rgba(157, 170, 207, 0.15);
+        font-size: 14px;
 
-    background:
-        rgba(17, 25, 47, 0.75);
+        font-weight: 750;
 
-    border-radius: 18px;
+        box-shadow:
+            0 10px 25px rgba(70,80,180,0.20);
 
-    padding: 17px;
+        transition: 0.2s;
+    }
 
-    min-height: 115px;
-}
+    div.stButton > button:hover {
 
+        border-color:
+            rgba(210,205,255,0.75);
 
-.summary-icon {
-    font-size: 24px;
-}
+        transform:
+            translateY(-1px);
+    }
 
 
-.summary-label {
-    color: #7f8ba7;
+    /* ==============================
+       RESULT CARDS
+       ============================== */
 
-    font-size: 10px;
+    .result-card {
 
-    text-transform: uppercase;
+        background:
+            linear-gradient(
+                145deg,
+                rgba(24,32,57,0.90),
+                rgba(12,18,33,0.94)
+            );
 
-    letter-spacing: 1px;
+        border:
+            1px solid rgba(150,160,190,0.15);
 
-    font-weight: 800;
+        border-radius: 16px;
 
-    margin-top: 6px;
-}
+        padding: 23px;
 
+        min-height: 155px;
 
-.summary-value {
-    color: #f3f5ff;
+        text-align: center;
+    }
 
-    font-size: 16px;
+    .result-icon {
 
-    font-weight: 750;
+        font-size: 31px;
 
-    margin-top: 5px;
-}
+        margin-bottom: 5px;
+    }
 
+    .result-label {
 
-/* ============================================================
-   BUTTON
-   ============================================================ */
+        color: #75819c;
 
-div.stButton > button {
+        font-size: 9px;
 
-    width: 100%;
+        font-weight: 700;
 
-    min-height: 56px;
+        letter-spacing: 1.2px;
 
-    border-radius: 16px;
+        text-transform: uppercase;
+    }
 
-    border: 1px solid rgba(179, 163, 255, 0.5);
+    .result-value {
 
-    background:
-        linear-gradient(
-            135deg,
-            #735de7,
-            #4d62c7
-        );
+        color: #f5f6ff;
 
-    color: white;
+        font-size: 25px;
 
-    font-size: 15px;
+        font-weight: 750;
 
-    font-weight: 800;
+        margin-top: 7px;
+    }
 
-    box-shadow:
-        0 12px 30px rgba(76, 91, 200, 0.25);
 
-}
+    /* ==============================
+       INSIGHT
+       ============================== */
 
+    .insight-card {
 
-div.stButton > button:hover {
+        background:
+            rgba(26,25,52,0.60);
 
-    border-color:
-        rgba(220, 214, 255, 0.8);
+        border-left:
+            3px solid #8170e8;
 
-    transform:
-        translateY(-1px);
-}
+        border-radius:
+            0 13px 13px 0;
 
+        padding:
+            19px 21px;
 
-/* ============================================================
-   INPUTS
-   ============================================================ */
+        color:
+            #d5dced;
 
-[data-testid="stNumberInput"] input,
-[data-baseweb="select"] > div {
+        line-height:
+            1.7;
+    }
 
-    background: #111a31 !important;
 
-    border-color:
-        rgba(157, 170, 207, 0.16) !important;
+    /* ==============================
+       SUMMARY
+       ============================== */
 
-    color: #f2f5ff !important;
+    .summary-card {
 
-    border-radius: 12px !important;
-}
+        background:
+            rgba(17,25,47,0.70);
 
+        border:
+            1px solid rgba(150,160,190,0.13);
 
-label {
+        border-radius:
+            13px;
 
-    color: #cbd5e1 !important;
+        padding:
+            15px;
 
-    font-weight: 650 !important;
-}
+        min-height:
+            105px;
+    }
 
+    .summary-icon {
 
-hr {
+        font-size:
+            21px;
+    }
 
-    border-color:
-        rgba(157, 170, 207, 0.10);
-}
+    .summary-label {
 
+        color:
+            #707d98;
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
+        font-size:
+            9px;
 
-.footer {
+        font-weight:
+            700;
 
-    text-align: center;
+        letter-spacing:
+            1px;
 
-    color: #5f6b87;
+        text-transform:
+            uppercase;
 
-    font-size: 11px;
+        margin-top:
+            6px;
+    }
 
-    padding: 30px 0 8px;
-}
+    .summary-value {
 
-</style>
-""", unsafe_allow_html=True)
+        color:
+            #f2f4ff;
+
+        font-size:
+            14px;
+
+        font-weight:
+            650;
+
+        margin-top:
+            5px;
+    }
+
+
+    /* ==============================
+       FOOTER
+       ============================== */
+
+    .footer {
+
+        text-align:
+            center;
+
+        color:
+            #59657f;
+
+        font-size:
+            10px;
+
+        padding:
+            30px 0 8px;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 
 # ============================================================
-# FILE NAMES
+# PROJECT FILES
 # ============================================================
 
 MODEL_FILE = "final_sleep_disorder_svm_model.pkl"
@@ -574,7 +600,7 @@ def load_dataset():
 
 
 # ============================================================
-# LOAD PROJECT FILES
+# LOAD FILES
 # ============================================================
 
 try:
@@ -597,180 +623,24 @@ except Exception as e:
 
 
 # ============================================================
-# HERO SECTION
+# PROFESSIONAL HEADER
 # ============================================================
-
-st.markdown("""
-<div class="hero">
-
-    <div class="stars">
-        ✦ · ✧ · ✦
-    </div>
-
-    <div class="moon"></div>
-
-    <div class="kicker">
-        🌙 INTELLIGENT SLEEP ANALYTICS
-    </div>
-
-    <h1>
-        Sleep Disorder<br>
-        Classification AI
-    </h1>
-
-    <p>
-        An intelligent machine-learning system that analyzes
-        lifestyle and physiological information to predict
-        possible sleep disorder categories.
-    </p>
-
-    <span class="badge">🤖 AI / ML</span>
-
-    <span class="badge">📊 CLASSIFICATION</span>
-
-    <span class="badge">🧠 OPTIMIZED SVM</span>
-
-    <span class="badge">🔬 RESEARCH PROJECT</span>
-
-</div>
-""", unsafe_allow_html=True)
-
-
-# ============================================================
-# SIDEBAR
-# ============================================================
-
-with st.sidebar:
-
-    st.markdown(
-        "## 🌙 SleepAI"
-    )
-
-    st.caption(
-        "Research Project Dashboard"
-    )
-
-    st.divider()
-
-    st.markdown(
-        "### ⚙️ Current Configuration"
-    )
-
-    st.markdown(
-        "**Task:** Classification"
-    )
-
-    st.markdown(
-        "**Model:** Optimized SVM"
-    )
-
-    st.markdown(
-        "**Status:** 🟢 Ready"
-    )
-
-    st.divider()
-
-    st.markdown(
-        "### 📋 Input Features"
-    )
-
-    st.markdown("""
-    👤 **Age**
-
-    💼 **Occupation**
-
-    ⚖️ **BMI Category**
-
-    😴 **Sleep Duration**
-
-    🧠 **Stress Level**
-    """)
-
-    st.divider()
-
-    st.markdown(
-        "### 🧠 Model"
-    )
-
-    st.info(
-        "Optimized Support Vector Machine (SVM)"
-    )
-
-    st.divider()
-
-    st.caption(
-        "Educational and research use only."
-    )
-
-
-# ============================================================
-# MODEL & TASK
-# ============================================================
-
-st.markdown(
-    '<div class="section-title">⚙️ Model & Task</div>',
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    '<div class="section-subtitle">'
-    'Choose the configuration for your sleep analysis.'
-    '</div>',
-    unsafe_allow_html=True
-)
-
-
-col1, col2 = st.columns(
-    2,
-    gap="large"
-)
-
-
-with col1:
-
-    task = st.selectbox(
-        "🎯 Task",
-        ["Classification"]
-    )
-
-
-with col2:
-
-    model_choice = st.selectbox(
-        "🧠 Model",
-        ["Optimized SVM"]
-    )
-
 
 st.markdown(
     """
-    <div class="config-card">
+    <div class="project-header">
 
-        <div style="
-            color:#8f9ab5;
-            font-size:11px;
-            font-weight:700;
-            text-transform:uppercase;
-            letter-spacing:1px;
-        ">
-            ACTIVE AI CONFIGURATION
+        <div class="project-label">
+            MACHINE LEARNING • RESEARCH PROJECT
         </div>
 
-        <div style="
-            font-size:25px;
-            font-weight:800;
-            margin-top:8px;
-            color:#f5f3ff;
-        ">
-            🧠 Optimized SVM
+        <div class="project-title">
+            Sleep Disorder Classification
         </div>
 
-        <div style="
-            color:#8996b3;
-            font-size:13px;
-            margin-top:6px;
-        ">
-            Final trained model for sleep disorder classification
+        <div class="project-description">
+            Machine-learning based classification of sleep disorders
+            using lifestyle and physiological information.
         </div>
 
     </div>
@@ -780,17 +650,228 @@ st.markdown(
 
 
 # ============================================================
-# PATIENT PROFILE
+# SIDEBAR
+# ============================================================
+
+with st.sidebar:
+
+    st.markdown(
+        "## 🧠 Sleep Disorder AI"
+    )
+
+    st.caption(
+        "Research Project Dashboard"
+    )
+
+    st.divider()
+
+    st.markdown(
+        "### Project Configuration"
+    )
+
+    st.markdown(
+        "**Task**  \n"
+        "Classification"
+    )
+
+    st.markdown(
+        "**Model**  \n"
+        "Optimized SVM"
+    )
+
+    st.markdown(
+        "**Status**  \n"
+        "🟢 Model Ready"
+    )
+
+    st.divider()
+
+    st.markdown(
+        "### Input Features"
+    )
+
+    st.markdown(
+        """
+        - Age
+        - Occupation
+        - BMI Category
+        - Sleep Duration
+        - Stress Level
+        """
+    )
+
+    st.divider()
+
+    st.markdown(
+        "### Dataset"
+    )
+
+    st.caption(
+        "Sleep Health and Lifestyle Dataset"
+    )
+
+    st.divider()
+
+    st.caption(
+        "For educational and research purposes."
+    )
+
+
+# ============================================================
+# PROJECT OVERVIEW
 # ============================================================
 
 st.markdown(
-    '<div class="section-title">🧑‍💻 Patient Profile</div>',
+    '<div class="section-title">Project Overview</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="section-subtitle">'
-    'Enter the patient information required by the trained model.'
+    '<div class="section-description">'
+    'Current machine-learning system configuration and status.'
+    '</div>',
+    unsafe_allow_html=True
+)
+
+
+overview1, overview2, overview3, overview4 = st.columns(
+    4,
+    gap="medium"
+)
+
+
+overview_cards = [
+
+    (
+        overview1,
+        "MODEL",
+        "Optimized SVM",
+        "Final trained classifier"
+    ),
+
+    (
+        overview2,
+        "TASK",
+        "Classification",
+        "Sleep disorder prediction"
+    ),
+
+    (
+        overview3,
+        "DATASET",
+        "Sleep Health",
+        "Lifestyle & health data"
+    ),
+
+    (
+        overview4,
+        "STATUS",
+        "● Ready",
+        "Model loaded successfully"
+    )
+
+]
+
+
+for col, label, value, description in overview_cards:
+
+    with col:
+
+        st.markdown(
+            f"""
+            <div class="overview-card">
+
+                <div class="overview-label">
+                    {label}
+                </div>
+
+                <div class="overview-value">
+                    {value}
+                </div>
+
+                <div class="overview-description">
+                    {description}
+                </div>
+
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+# ============================================================
+# MODEL & TASK
+# ============================================================
+
+st.markdown(
+    '<div class="section-title">Model & Task</div>',
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    '<div class="section-description">'
+    'Select the task and trained model used for prediction.'
+    '</div>',
+    unsafe_allow_html=True
+)
+
+
+config_col1, config_col2 = st.columns(
+    2,
+    gap="large"
+)
+
+
+with config_col1:
+
+    task = st.selectbox(
+        "🎯 Task",
+        ["Classification"]
+    )
+
+
+with config_col2:
+
+    model_choice = st.selectbox(
+        "🧠 Model",
+        ["Optimized SVM"]
+    )
+
+
+st.markdown(
+    """
+    <div class="configuration-card">
+
+        <div class="configuration-title">
+            Active Model
+        </div>
+
+        <div class="configuration-model">
+            Optimized Support Vector Machine
+        </div>
+
+        <div class="configuration-text">
+            Final trained SVM model used for sleep disorder classification.
+        </div>
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# ============================================================
+# PATIENT INFORMATION
+# ============================================================
+
+st.markdown(
+    '<div class="section-title">Patient Information</div>',
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    '<div class="section-description">'
+    'Enter the lifestyle and physiological information required for prediction.'
     '</div>',
     unsafe_allow_html=True
 )
@@ -812,13 +893,19 @@ bmis = sorted(
 )
 
 
-col1, col2 = st.columns(
+st.markdown(
+    '<div class="input-card">',
+    unsafe_allow_html=True
+)
+
+
+input_col1, input_col2 = st.columns(
     2,
     gap="large"
 )
 
 
-with col1:
+with input_col1:
 
     age = st.number_input(
         "👤 Age",
@@ -828,12 +915,10 @@ with col1:
         step=1
     )
 
-
     occupation = st.selectbox(
         "💼 Occupation",
         occupations
     )
-
 
     bmi = st.selectbox(
         "⚖️ BMI Category",
@@ -841,7 +926,7 @@ with col1:
     )
 
 
-with col2:
+with input_col2:
 
     sleep = st.number_input(
         "😴 Sleep Duration (hours)",
@@ -850,7 +935,6 @@ with col2:
         value=7.0,
         step=0.1
     )
-
 
     stress = st.number_input(
         "🧠 Stress Level",
@@ -861,22 +945,28 @@ with col2:
     )
 
 
+st.markdown(
+    '</div>',
+    unsafe_allow_html=True
+)
+
+
 st.write("")
 
 
 # ============================================================
-# PREDICTION BUTTON
+# PREDICTION
 # ============================================================
 
 if st.button(
-    "✨ RUN AI SLEEP ANALYSIS",
+    "RUN SLEEP DISORDER ANALYSIS",
     type="primary"
 ):
 
     try:
 
         # ----------------------------------------------------
-        # CREATE INPUT DATAFRAME
+        # INPUT DATA
         # ----------------------------------------------------
 
         input_df = pd.DataFrame(
@@ -893,7 +983,7 @@ if st.button(
 
 
         # ----------------------------------------------------
-        # PREPROCESS INPUT
+        # PREPROCESSING
         # ----------------------------------------------------
 
         transformed = preprocessor.transform(
@@ -902,7 +992,7 @@ if st.button(
 
 
         # ----------------------------------------------------
-        # MODEL PREDICTION
+        # PREDICTION
         # ----------------------------------------------------
 
         prediction_encoded = model.predict(
@@ -916,7 +1006,7 @@ if st.button(
 
 
         # ----------------------------------------------------
-        # PREDICTION PROBABILITY
+        # CONFIDENCE
         # ----------------------------------------------------
 
         probabilities = None
@@ -989,9 +1079,8 @@ if st.button(
         if prediction == "None":
 
             recommendation = (
-                "Maintain healthy sleep habits, "
-                "follow a consistent sleep schedule, "
-                "and continue monitoring sleep quality."
+                "Maintain healthy sleep habits and "
+                "follow a consistent sleep schedule."
             )
 
         elif prediction == "Insomnia":
@@ -1025,15 +1114,13 @@ if st.button(
         st.markdown("---")
 
         st.markdown(
-            '<div class="section-title">'
-            '🔮 AI Prediction'
-            '</div>',
+            '<div class="section-title">Prediction Results</div>',
             unsafe_allow_html=True
         )
 
         st.markdown(
-            '<div class="section-subtitle">'
-            'Prediction generated using the selected trained model.'
+            '<div class="section-description">'
+            'Output generated by the trained Optimized SVM model.'
             '</div>',
             unsafe_allow_html=True
         )
@@ -1046,48 +1133,55 @@ if st.button(
 
 
         confidence_text = (
+
             f"{confidence * 100:.2f}%"
+
             if confidence is not None
+
             else "N/A"
         )
 
 
-        risk_icon = (
-            "🟢"
-            if risk == "LOW"
-            else "🟠"
-            if risk == "MODERATE"
-            else "🔴"
-        )
+        if risk == "LOW":
+
+            risk_icon = "🟢"
+
+        elif risk == "MODERATE":
+
+            risk_icon = "🟠"
+
+        else:
+
+            risk_icon = "🔴"
 
 
-        cards = [
+        result_cards = [
 
             (
                 result1,
                 "😴",
-                "Predicted Disorder",
+                "PREDICTED DISORDER",
                 str(prediction)
             ),
 
             (
                 result2,
                 "🎯",
-                "Model Confidence",
+                "MODEL CONFIDENCE",
                 confidence_text
             ),
 
             (
                 result3,
                 risk_icon,
-                "Sleep Risk Level",
+                "RISK LEVEL",
                 risk
             )
 
         ]
 
 
-        for col, icon, label, value in cards:
+        for col, icon, label, value in result_cards:
 
             with col:
 
@@ -1114,20 +1208,20 @@ if st.button(
 
 
         # ====================================================
-        # PROBABILITY PROFILE
+        # PROBABILITY ANALYSIS
         # ====================================================
 
         if probabilities is not None:
 
             st.markdown(
                 '<div class="section-title">'
-                '📊 Model Probability Profile'
+                'Probability Analysis'
                 '</div>',
                 unsafe_allow_html=True
             )
 
             st.markdown(
-                '<div class="section-subtitle">'
+                '<div class="section-description">'
                 'Probability distribution across the available sleep disorder classes.'
                 '</div>',
                 unsafe_allow_html=True
@@ -1171,6 +1265,7 @@ if st.button(
 
                 display_df = probability_df.copy()
 
+
                 display_df[
                     "Probability (%)"
                 ] = display_df[
@@ -1194,7 +1289,7 @@ if st.button(
 
         st.markdown(
             '<div class="section-title">'
-            '💡 Sleep Insight'
+            'Sleep Insight'
             '</div>',
             unsafe_allow_html=True
         )
@@ -1202,11 +1297,11 @@ if st.button(
 
         st.markdown(
             f"""
-            <div class="recommendation">
+            <div class="insight-card">
 
-                <b>
+                <strong>
                     Personalized Research Output
-                </b>
+                </strong>
 
                 <br><br>
 
@@ -1224,7 +1319,7 @@ if st.button(
 
         st.markdown(
             '<div class="section-title">'
-            '📋 Patient Summary'
+            'Patient Summary'
             '</div>',
             unsafe_allow_html=True
         )
@@ -1237,13 +1332,13 @@ if st.button(
 
             (
                 "👤",
-                "Age",
+                "AGE",
                 str(age)
             ),
 
             (
                 "💼",
-                "Occupation",
+                "OCCUPATION",
                 str(occupation)
             ),
 
@@ -1255,13 +1350,13 @@ if st.button(
 
             (
                 "😴",
-                "Sleep",
+                "SLEEP",
                 f"{sleep:.1f} hrs"
             ),
 
             (
                 "🧠",
-                "Stress",
+                "STRESS",
                 f"{stress}/10"
             )
 
@@ -1307,8 +1402,9 @@ if st.button(
 
         st.write("")
 
+
         st.warning(
-            "⚕️ This application is intended for educational "
+            "This application is intended for educational "
             "and research purposes only and is not a medical diagnosis."
         )
 
@@ -1329,13 +1425,7 @@ if st.button(
 st.markdown(
     """
     <div class="footer">
-
-        🌙 Sleep Disorder Classification AI
-
-        • Machine Learning Research Project
-
-        • Optimized SVM
-
+        Sleep Disorder Classification • Machine Learning Research Project • Optimized SVM
     </div>
     """,
     unsafe_allow_html=True
