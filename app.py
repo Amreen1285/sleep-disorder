@@ -3,21 +3,26 @@ import pandas as pd
 import numpy as np
 import joblib
 
+
 # ============================================================
-# PAGE CONFIG
+# PAGE CONFIGURATION
 # ============================================================
+
 st.set_page_config(
-    page_title="SleepAI • Sleep Disorder Classification",
+    page_title="SleepAI | Sleep Disorder Classification",
     page_icon="🌙",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
+
 # ============================================================
-# NIGHT THEME UI
+# CUSTOM NIGHT THEME
 # ============================================================
+
 st.markdown("""
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 * {
@@ -26,261 +31,493 @@ st.markdown("""
 
 .stApp {
     background:
-        radial-gradient(circle at 7% 8%, rgba(92,70,190,.20), transparent 25%),
-        radial-gradient(circle at 92% 12%, rgba(48,117,210,.15), transparent 24%),
-        linear-gradient(135deg,#050812 0%,#09101f 52%,#0c1426 100%);
+        radial-gradient(
+            circle at 8% 5%,
+            rgba(100, 85, 210, 0.20),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 92% 10%,
+            rgba(55, 115, 220, 0.15),
+            transparent 25%
+        ),
+        linear-gradient(
+            135deg,
+            #040711 0%,
+            #08101f 50%,
+            #0b1428 100%
+        );
+
     color: #f4f6ff;
 }
+
 
 [data-testid="stHeader"] {
     background: transparent;
 }
 
+
 .block-container {
     max-width: 1450px;
-    padding-top: 1.7rem;
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
 }
 
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg,#070b16,#0b1121);
-    border-right: 1px solid rgba(157,170,207,.15);
+    background:
+        linear-gradient(
+            180deg,
+            #060a15 0%,
+            #0a1020 100%
+        );
+
+    border-right: 1px solid rgba(150, 165, 205, 0.14);
 }
+
 
 [data-testid="stSidebar"] * {
     color: #dce4fa !important;
 }
 
-/* HERO */
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
 .hero {
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(155,135,255,.24);
+
     border-radius: 30px;
-    padding: 42px;
+
+    padding: 45px;
+
+    margin-bottom: 30px;
+
+    border: 1px solid rgba(159, 139, 255, 0.25);
+
     background:
-        radial-gradient(circle at 88% 20%,rgba(155,135,255,.18),transparent 23%),
-        radial-gradient(circle at 65% 90%,rgba(103,164,255,.11),transparent 25%),
-        rgba(12,18,35,.88);
-    box-shadow: 0 25px 65px rgba(0,0,0,.28);
-    margin-bottom: 28px;
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(145, 125, 255, 0.18),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 65% 100%,
+            rgba(85, 150, 255, 0.10),
+            transparent 28%
+        ),
+        rgba(12, 18, 35, 0.90);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.35);
 }
 
-/* MOON */
+
+/* ============================================================
+   MOON
+   ============================================================ */
+
 .moon {
     position: absolute;
-    right: 65px;
-    top: 38px;
-    width: 105px;
-    height: 105px;
+
+    right: 70px;
+    top: 42px;
+
+    width: 110px;
+    height: 110px;
+
     border-radius: 50%;
-    background: #f4f0ff;
-    box-shadow: 0 0 60px rgba(180,164,255,.35);
+
+    background: #f5f2ff;
+
+    box-shadow:
+        0 0 25px rgba(210, 200, 255, 0.35),
+        0 0 70px rgba(155, 135, 255, 0.20);
 }
+
 
 .moon:after {
     content: "";
+
     position: absolute;
-    left: 30px;
-    top: -7px;
-    width: 105px;
-    height: 105px;
+
+    left: 32px;
+    top: -8px;
+
+    width: 110px;
+    height: 110px;
+
     border-radius: 50%;
+
     background: #0d1426;
 }
 
+
+/* ============================================================
+   STARS
+   ============================================================ */
+
 .stars {
     position: absolute;
-    right: 185px;
-    top: 28px;
-    color: rgba(220,226,255,.7);
-    font-size: 13px;
-    letter-spacing: 14px;
+
+    right: 205px;
+    top: 25px;
+
+    color: rgba(230, 232, 255, 0.75);
+
+    font-size: 14px;
+
+    letter-spacing: 12px;
 }
 
+
+/* ============================================================
+   HERO TEXT
+   ============================================================ */
+
 .kicker {
-    color: #a99aff;
+    color: #aaa0ff;
+
     font-size: 12px;
+
     font-weight: 800;
-    letter-spacing: 2.2px;
+
+    letter-spacing: 2px;
+
     text-transform: uppercase;
 }
 
+
 .hero h1 {
-    margin: 12px 0 10px;
-    font-size: clamp(36px,5vw,58px);
-    line-height: 1.03;
-    letter-spacing: -2px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+
+    font-size: clamp(38px, 5vw, 60px);
+
+    line-height: 1.02;
+
+    letter-spacing: -2.5px;
+
     font-weight: 800;
+
+    color: #f8f8ff;
 }
 
+
 .hero p {
-    max-width: 820px;
+    max-width: 800px;
+
     color: #aeb8d0;
+
     font-size: 15px;
+
     line-height: 1.7;
 }
 
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+
 .badge {
     display: inline-block;
-    margin: 14px 7px 0 0;
-    padding: 7px 12px;
+
+    margin-top: 15px;
+    margin-right: 7px;
+
+    padding: 7px 13px;
+
     border-radius: 999px;
-    border: 1px solid rgba(155,135,255,.22);
-    background: rgba(155,135,255,.07);
-    color: #c8c0ff;
+
+    border: 1px solid rgba(160, 140, 255, 0.22);
+
+    background: rgba(155, 135, 255, 0.07);
+
+    color: #cbc4ff;
+
     font-size: 11px;
+
     font-weight: 700;
 }
 
-/* SECTION */
+
+/* ============================================================
+   SECTION TITLES
+   ============================================================ */
+
 .section-title {
     color: #f4f6ff;
+
     font-size: 24px;
+
     font-weight: 800;
-    margin: 20px 0 5px;
+
+    margin-top: 25px;
+    margin-bottom: 5px;
 }
+
 
 .section-subtitle {
     color: #8f9ab5;
+
     font-size: 13px;
+
     margin-bottom: 18px;
 }
 
-/* CONFIG CARD */
+
+/* ============================================================
+   CONFIGURATION CARD
+   ============================================================ */
+
 .config-card {
-    padding: 20px;
+    padding: 22px;
+
     border-radius: 22px;
-    border: 1px solid rgba(155,135,255,.18);
+
+    border: 1px solid rgba(155, 135, 255, 0.18);
+
     background:
         linear-gradient(
             145deg,
-            rgba(27,35,65,.72),
-            rgba(13,19,36,.82)
+            rgba(27, 35, 65, 0.75),
+            rgba(13, 19, 36, 0.85)
         );
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.18);
 }
 
-/* RESULT */
+
+/* ============================================================
+   RESULT CARDS
+   ============================================================ */
+
 .result-card {
     padding: 28px 20px;
+
+    min-height: 180px;
+
     border-radius: 24px;
+
     text-align: center;
-    border: 1px solid rgba(155,135,255,.22);
+
+    border: 1px solid rgba(155, 135, 255, 0.22);
+
     background:
         radial-gradient(
             circle at 80% 10%,
-            rgba(155,135,255,.14),
+            rgba(155, 135, 255, 0.14),
             transparent 30%
         ),
         linear-gradient(
             145deg,
-            rgba(25,33,61,.92),
-            rgba(11,17,32,.94)
+            rgba(25, 33, 61, 0.95),
+            rgba(11, 17, 32, 0.96)
         );
-    min-height: 175px;
-    box-shadow: 0 18px 45px rgba(0,0,0,.24);
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.25);
 }
+
 
 .result-icon {
     font-size: 40px;
 }
 
+
 .result-label {
     color: #8793af;
+
     font-size: 10px;
+
     font-weight: 800;
+
     letter-spacing: 1.3px;
+
     text-transform: uppercase;
+
     margin-top: 8px;
 }
 
+
 .result-value {
     color: #f8f8ff;
-    font-size: 28px;
+
+    font-size: 27px;
+
     font-weight: 800;
+
     margin-top: 7px;
 }
 
-/* RECOMMENDATION */
+
+/* ============================================================
+   RECOMMENDATION
+   ============================================================ */
+
 .recommendation {
     border-left: 3px solid #9b87ff;
-    border-radius: 0 17px 17px 0;
-    padding: 20px 22px;
-    background: rgba(155,135,255,.07);
+
+    border-radius: 0 18px 18px 0;
+
+    padding: 21px 23px;
+
+    background:
+        rgba(155, 135, 255, 0.07);
+
     color: #d5dced;
+
     line-height: 1.7;
 }
 
-/* SUMMARY */
+
+/* ============================================================
+   SUMMARY CARDS
+   ============================================================ */
+
 .summary-card {
-    border: 1px solid rgba(157,170,207,.15);
-    background: rgba(17,25,47,.72);
+    border: 1px solid rgba(157, 170, 207, 0.15);
+
+    background:
+        rgba(17, 25, 47, 0.75);
+
     border-radius: 18px;
+
     padding: 17px;
+
     min-height: 115px;
 }
+
 
 .summary-icon {
     font-size: 24px;
 }
 
+
 .summary-label {
     color: #7f8ba7;
+
     font-size: 10px;
+
     text-transform: uppercase;
+
     letter-spacing: 1px;
+
     font-weight: 800;
+
     margin-top: 6px;
 }
 
+
 .summary-value {
     color: #f3f5ff;
+
     font-size: 16px;
+
     font-weight: 750;
+
     margin-top: 5px;
 }
 
-/* BUTTON */
+
+/* ============================================================
+   BUTTON
+   ============================================================ */
+
 div.stButton > button {
+
     width: 100%;
-    min-height: 55px;
-    border-radius: 15px;
-    border: 1px solid rgba(179,163,255,.5);
-    background: linear-gradient(135deg,#735de7,#4d62c7);
+
+    min-height: 56px;
+
+    border-radius: 16px;
+
+    border: 1px solid rgba(179, 163, 255, 0.5);
+
+    background:
+        linear-gradient(
+            135deg,
+            #735de7,
+            #4d62c7
+        );
+
     color: white;
+
     font-size: 15px;
+
     font-weight: 800;
-    box-shadow: 0 12px 30px rgba(76,91,200,.25);
+
+    box-shadow:
+        0 12px 30px rgba(76, 91, 200, 0.25);
+
 }
+
 
 div.stButton > button:hover {
-    border-color: rgba(220,214,255,.75);
-    transform: translateY(-1px);
+
+    border-color:
+        rgba(220, 214, 255, 0.8);
+
+    transform:
+        translateY(-1px);
 }
 
-/* INPUTS */
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
+
 [data-testid="stNumberInput"] input,
 [data-baseweb="select"] > div {
+
     background: #111a31 !important;
-    border-color: rgba(157,170,207,.16) !important;
+
+    border-color:
+        rgba(157, 170, 207, 0.16) !important;
+
     color: #f2f5ff !important;
+
     border-radius: 12px !important;
 }
 
+
 label {
+
     color: #cbd5e1 !important;
+
     font-weight: 650 !important;
 }
 
+
 hr {
-    border-color: rgba(157,170,207,.10);
+
+    border-color:
+        rgba(157, 170, 207, 0.10);
 }
 
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
 .footer {
+
     text-align: center;
+
     color: #5f6b87;
+
     font-size: 11px;
+
     padding: 30px 0 8px;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -288,19 +525,26 @@ hr {
 # ============================================================
 # FILE NAMES
 # ============================================================
+
 MODEL_FILE = "final_sleep_disorder_svm_model.pkl"
+
 PREPROCESSOR_FILE = "sleep_disorder_preprocessor.pkl"
+
 LABEL_ENCODER_FILE = "sleep_disorder_label_encoder.pkl"
+
 DATASET_FILE = "Sleep_health_and_lifestyle_dataset.csv"
 
 
 # ============================================================
 # LOAD MODEL
 # ============================================================
+
 @st.cache_resource
 def load_model_files():
 
-    model = joblib.load(MODEL_FILE)
+    model = joblib.load(
+        MODEL_FILE
+    )
 
     preprocessor = joblib.load(
         PREPROCESSOR_FILE
@@ -310,8 +554,16 @@ def load_model_files():
         LABEL_ENCODER_FILE
     )
 
-    return model, preprocessor, label_encoder
+    return (
+        model,
+        preprocessor,
+        label_encoder
+    )
 
+
+# ============================================================
+# LOAD DATASET
+# ============================================================
 
 @st.cache_data
 def load_dataset():
@@ -321,9 +573,15 @@ def load_dataset():
     )
 
 
+# ============================================================
+# LOAD PROJECT FILES
+# ============================================================
+
 try:
 
-    model, preprocessor, label_encoder = load_model_files()
+    model, preprocessor, label_encoder = (
+        load_model_files()
+    )
 
     df = load_dataset()
 
@@ -339,8 +597,9 @@ except Exception as e:
 
 
 # ============================================================
-# HERO
+# HERO SECTION
 # ============================================================
+
 st.markdown("""
 <div class="hero">
 
@@ -351,7 +610,7 @@ st.markdown("""
     <div class="moon"></div>
 
     <div class="kicker">
-        🌙 Intelligent Sleep Analytics
+        🌙 INTELLIGENT SLEEP ANALYTICS
     </div>
 
     <h1>
@@ -365,21 +624,13 @@ st.markdown("""
         possible sleep disorder categories.
     </p>
 
-    <span class="badge">
-        AI / ML
-    </span>
+    <span class="badge">🤖 AI / ML</span>
 
-    <span class="badge">
-        CLASSIFICATION
-    </span>
+    <span class="badge">📊 CLASSIFICATION</span>
 
-    <span class="badge">
-        OPTIMIZED SVM
-    </span>
+    <span class="badge">🧠 OPTIMIZED SVM</span>
 
-    <span class="badge">
-        RESEARCH PROJECT
-    </span>
+    <span class="badge">🔬 RESEARCH PROJECT</span>
 
 </div>
 """, unsafe_allow_html=True)
@@ -388,9 +639,12 @@ st.markdown("""
 # ============================================================
 # SIDEBAR
 # ============================================================
+
 with st.sidebar:
 
-    st.markdown("## 🌙 SleepAI")
+    st.markdown(
+        "## 🌙 SleepAI"
+    )
 
     st.caption(
         "Research Project Dashboard"
@@ -411,7 +665,7 @@ with st.sidebar:
     )
 
     st.markdown(
-        "**Dataset:** Sleep Health & Lifestyle"
+        "**Status:** 🟢 Ready"
     )
 
     st.divider()
@@ -421,16 +675,26 @@ with st.sidebar:
     )
 
     st.markdown("""
-    👤 Age
+    👤 **Age**
 
-    💼 Occupation
+    💼 **Occupation**
 
-    ⚖️ BMI Category
+    ⚖️ **BMI Category**
 
-    😴 Sleep Duration
+    😴 **Sleep Duration**
 
-    🧠 Stress Level
+    🧠 **Stress Level**
     """)
+
+    st.divider()
+
+    st.markdown(
+        "### 🧠 Model"
+    )
+
+    st.info(
+        "Optimized Support Vector Machine (SVM)"
+    )
 
     st.divider()
 
@@ -440,8 +704,9 @@ with st.sidebar:
 
 
 # ============================================================
-# MODEL AND TASK
+# MODEL & TASK
 # ============================================================
+
 st.markdown(
     '<div class="section-title">⚙️ Model & Task</div>',
     unsafe_allow_html=True
@@ -449,15 +714,17 @@ st.markdown(
 
 st.markdown(
     '<div class="section-subtitle">'
-    'Choose the configuration for your analysis.'
+    'Choose the configuration for your sleep analysis.'
     '</div>',
     unsafe_allow_html=True
 )
+
 
 col1, col2 = st.columns(
     2,
     gap="large"
 )
+
 
 with col1:
 
@@ -465,6 +732,7 @@ with col1:
         "🎯 Task",
         ["Classification"]
     )
+
 
 with col2:
 
@@ -474,35 +742,47 @@ with col2:
     )
 
 
-st.markdown("""
-<div class="config-card">
+st.markdown(
+    """
+    <div class="config-card">
 
-    <b>🧠 Selected Model</b>
+        <div style="
+            color:#8f9ab5;
+            font-size:11px;
+            font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:1px;
+        ">
+            ACTIVE AI CONFIGURATION
+        </div>
 
-    <div style="
-        font-size:24px;
-        font-weight:800;
-        margin-top:8px;
-        color:#f5f3ff;
-    ">
-        Optimized SVM
+        <div style="
+            font-size:25px;
+            font-weight:800;
+            margin-top:8px;
+            color:#f5f3ff;
+        ">
+            🧠 Optimized SVM
+        </div>
+
+        <div style="
+            color:#8996b3;
+            font-size:13px;
+            margin-top:6px;
+        ">
+            Final trained model for sleep disorder classification
+        </div>
+
     </div>
-
-    <div style="
-        color:#8996b3;
-        font-size:12px;
-        margin-top:6px;
-    ">
-        Final trained model • Classification task
-    </div>
-
-</div>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True
+)
 
 
 # ============================================================
-# PATIENT INPUT
+# PATIENT PROFILE
 # ============================================================
+
 st.markdown(
     '<div class="section-title">🧑‍💻 Patient Profile</div>',
     unsafe_allow_html=True
@@ -510,7 +790,7 @@ st.markdown(
 
 st.markdown(
     '<div class="section-subtitle">'
-    'Enter the information used by the trained prediction pipeline.'
+    'Enter the patient information required by the trained model.'
     '</div>',
     unsafe_allow_html=True
 )
@@ -522,6 +802,7 @@ occupations = sorted(
     .unique()
     .tolist()
 )
+
 
 bmis = sorted(
     df["BMI Category"]
@@ -547,10 +828,12 @@ with col1:
         step=1
     )
 
+
     occupation = st.selectbox(
         "💼 Occupation",
         occupations
     )
+
 
     bmi = st.selectbox(
         "⚖️ BMI Category",
@@ -568,6 +851,7 @@ with col2:
         step=0.1
     )
 
+
     stress = st.number_input(
         "🧠 Stress Level",
         min_value=1,
@@ -581,8 +865,9 @@ st.write("")
 
 
 # ============================================================
-# PREDICT
+# PREDICTION BUTTON
 # ============================================================
+
 if st.button(
     "✨ RUN AI SLEEP ANALYSIS",
     type="primary"
@@ -590,24 +875,36 @@ if st.button(
 
     try:
 
-        input_df = pd.DataFrame([
-            {
-                "Age": age,
-                "Occupation": occupation,
-                "BMI Category": bmi,
-                "Sleep Duration": sleep,
-                "Stress Level": stress
-            }
-        ])
+        # ----------------------------------------------------
+        # CREATE INPUT DATAFRAME
+        # ----------------------------------------------------
+
+        input_df = pd.DataFrame(
+            [
+                {
+                    "Age": age,
+                    "Occupation": occupation,
+                    "BMI Category": bmi,
+                    "Sleep Duration": sleep,
+                    "Stress Level": stress
+                }
+            ]
+        )
 
 
-        # PREPROCESS
+        # ----------------------------------------------------
+        # PREPROCESS INPUT
+        # ----------------------------------------------------
+
         transformed = preprocessor.transform(
             input_df
         )
 
 
-        # PREDICTION
+        # ----------------------------------------------------
+        # MODEL PREDICTION
+        # ----------------------------------------------------
+
         prediction_encoded = model.predict(
             transformed
         )
@@ -618,8 +915,12 @@ if st.button(
         )[0]
 
 
-        # PROBABILITY
+        # ----------------------------------------------------
+        # PREDICTION PROBABILITY
+        # ----------------------------------------------------
+
         probabilities = None
+
         confidence = None
 
 
@@ -637,9 +938,10 @@ if st.button(
             )
 
 
-        # ====================================================
-        # RISK
-        # ====================================================
+        # ----------------------------------------------------
+        # RISK LEVEL
+        # ----------------------------------------------------
+
         if prediction == "None":
 
             if (
@@ -680,22 +982,24 @@ if st.button(
             risk = "MODERATE"
 
 
-        # ====================================================
+        # ----------------------------------------------------
         # RECOMMENDATION
-        # ====================================================
+        # ----------------------------------------------------
+
         if prediction == "None":
 
             recommendation = (
-                "Maintain healthy sleep habits and "
-                "a consistent sleep schedule."
+                "Maintain healthy sleep habits, "
+                "follow a consistent sleep schedule, "
+                "and continue monitoring sleep quality."
             )
 
         elif prediction == "Insomnia":
 
             recommendation = (
                 "Maintain a consistent sleep schedule, "
-                "reduce stress before bedtime, and avoid "
-                "excessive screen use at night."
+                "reduce stress before bedtime, and "
+                "limit excessive screen use at night."
             )
 
         elif prediction == "Sleep Apnea":
@@ -715,8 +1019,9 @@ if st.button(
 
 
         # ====================================================
-        # RESULT
+        # RESULTS
         # ====================================================
+
         st.markdown("---")
 
         st.markdown(
@@ -809,8 +1114,9 @@ if st.button(
 
 
         # ====================================================
-        # PROBABILITY
+        # PROBABILITY PROFILE
         # ====================================================
+
         if probabilities is not None:
 
             st.markdown(
@@ -822,7 +1128,7 @@ if st.button(
 
             st.markdown(
                 '<div class="section-subtitle">'
-                'Probability distribution across the available classes.'
+                'Probability distribution across the available sleep disorder classes.'
                 '</div>',
                 unsafe_allow_html=True
             )
@@ -847,7 +1153,7 @@ if st.button(
 
 
             chart_col, table_col = st.columns(
-                [1.25, 1],
+                [1.3, 1],
                 gap="large"
             )
 
@@ -883,8 +1189,9 @@ if st.button(
 
 
         # ====================================================
-        # RECOMMENDATION
+        # SLEEP INSIGHT
         # ====================================================
+
         st.markdown(
             '<div class="section-title">'
             '💡 Sleep Insight'
@@ -898,7 +1205,7 @@ if st.button(
             <div class="recommendation">
 
                 <b>
-                    Personalized research output
+                    Personalized Research Output
                 </b>
 
                 <br><br>
@@ -912,8 +1219,9 @@ if st.button(
 
 
         # ====================================================
-        # SUMMARY
+        # PATIENT SUMMARY
         # ====================================================
+
         st.markdown(
             '<div class="section-title">'
             '📋 Patient Summary'
@@ -993,13 +1301,15 @@ if st.button(
                 )
 
 
+        # ====================================================
+        # DISCLAIMER
+        # ====================================================
+
         st.write("")
 
-
         st.warning(
-            "⚕️ This application is intended for "
-            "educational and research purposes only and "
-            "is not a medical diagnosis."
+            "⚕️ This application is intended for educational "
+            "and research purposes only and is not a medical diagnosis."
         )
 
 
@@ -1015,12 +1325,17 @@ if st.button(
 # ============================================================
 # FOOTER
 # ============================================================
+
 st.markdown(
     """
     <div class="footer">
+
         🌙 Sleep Disorder Classification AI
+
         • Machine Learning Research Project
+
         • Optimized SVM
+
     </div>
     """,
     unsafe_allow_html=True
